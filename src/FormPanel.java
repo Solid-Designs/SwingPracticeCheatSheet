@@ -16,6 +16,10 @@ public class FormPanel extends JPanel {
     private JComboBox empCombo;
     private JCheckBox citizenCheck;
     private JTextField taxField;
+    private JLabel taxLabel;
+    private JRadioButton maleRadio;
+    private JRadioButton femaleRadio;
+    private ButtonGroup genderGroup;
 
     public FormPanel(){
         // Sizing tutorial ----------
@@ -32,6 +36,33 @@ public class FormPanel extends JPanel {
         empCombo = new JComboBox();
         citizenCheck = new JCheckBox();
         taxField = new JTextField(10);
+        taxLabel = new JLabel("Tax ID: ");
+        maleRadio = new JRadioButton("male");
+        femaleRadio = new JRadioButton("female");
+        genderGroup = new ButtonGroup();
+
+        // setActionCommand lets you retrieve a string
+        maleRadio.setActionCommand("male");
+        femaleRadio.setActionCommand("female");
+
+        maleRadio.setSelected(true);
+
+        // Radio Button tutorial
+        genderGroup.add(maleRadio);
+        genderGroup.add(femaleRadio);
+
+        // Check boxes tutorial
+        taxLabel.setEnabled(false);
+        taxField.setEnabled(false);
+
+        citizenCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean isTicked = citizenCheck.isSelected();
+                taxLabel.setEnabled(isTicked);
+                taxField.setEnabled(isTicked);
+            }
+        });
 
         // List box tutorial. This included models
         DefaultListModel ageModel = new DefaultListModel();
@@ -66,10 +97,15 @@ public class FormPanel extends JPanel {
                 // For this, you must type cast since we know that it is a string!
                 AgeCategory ageCat = (AgeCategory)ageList.getSelectedValue();
                 String empCat = (String)empCombo.getSelectedItem();
+                String taxID = taxField.getText();
+                boolean usCitizen = citizenCheck.isSelected();
+                // This return a string from the button group of radio buttons
+                String gender = genderGroup.getSelection().getActionCommand();
 
                 System.out.print(empCat);
 
-                FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat);
+                FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat,
+                        taxID, usCitizen, gender);
 
                 if(formListener != null){
                     formListener.formEventOccurred(ev);
@@ -167,6 +203,81 @@ public class FormPanel extends JPanel {
         add(empCombo, gc);
 
         ///////////////////////// FIFTH ROW ////////////////////////
+
+        gc.gridy++;
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0,0,0,5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(new JLabel("US Citizen: "), gc);
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0,0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(citizenCheck, gc);
+
+        ///////////////////////// SIXTH ROW ////////////////////////
+
+        gc.gridy++;
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0,0,0,5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(taxLabel, gc);
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0,0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(taxField, gc);
+
+        ///////////////////////// SEVENTH ROW ////////////////////////
+
+        gc.gridy++;
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0,0,0,5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(taxLabel, gc);
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0,0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(taxField, gc);
+
+        ///////////////////////// EIGHTH ROW ////////////////////////
+
+        gc.gridy++;
+        gc.weightx = 1;
+        gc.weighty = 0.05;
+
+        gc.gridx = 0;
+        gc.insets = new Insets(0,0,0,5);
+        gc.anchor = GridBagConstraints.FIRST_LINE_END;
+        add(new JLabel("Gender"), gc);
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0,0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(maleRadio, gc);
+
+        ///////////////////////// NINTH ROW ////////////////////////
+
+        gc.gridy++;
+        gc.weightx = 1;
+        gc.weighty = 0.2;
+
+        gc.gridx = 1;
+        gc.insets = new Insets(0,0,0,0);
+        gc.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(femaleRadio, gc);
+
+        ///////////////////////// TENTH ROW ////////////////////////
 
         gc.gridx = 1;
         gc.gridy++;
