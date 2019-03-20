@@ -14,6 +14,8 @@ public class FormPanel extends JPanel {
     private FormListener formListener;
     private JList ageList;
     private JComboBox empCombo;
+    private JCheckBox citizenCheck;
+    private JTextField taxField;
 
     public FormPanel(){
         // Sizing tutorial ----------
@@ -28,6 +30,8 @@ public class FormPanel extends JPanel {
         occupationField = new JTextField(10);
         ageList = new JList();
         empCombo = new JComboBox();
+        citizenCheck = new JCheckBox();
+        taxField = new JTextField(10);
 
         // List box tutorial. This included models
         DefaultListModel ageModel = new DefaultListModel();
@@ -65,7 +69,7 @@ public class FormPanel extends JPanel {
 
                 System.out.print(empCat);
 
-                FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId());
+                FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat);
 
                 if(formListener != null){
                     formListener.formEventOccurred(ev);
