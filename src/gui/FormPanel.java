@@ -1,8 +1,11 @@
+package gui;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class FormPanel extends JPanel {
     // Text field and labels tutorial
@@ -40,6 +43,13 @@ public class FormPanel extends JPanel {
         maleRadio = new JRadioButton("male");
         femaleRadio = new JRadioButton("female");
         genderGroup = new ButtonGroup();
+        okBtn = new JButton("OK");
+
+        // set up mnemonics for Ok button
+        okBtn.setMnemonic(KeyEvent.VK_O);
+
+        nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
+        nameLabel.setLabelFor(nameField);
 
         // setActionCommand lets you retrieve a string
         maleRadio.setActionCommand("male");
@@ -83,8 +93,6 @@ public class FormPanel extends JPanel {
         empCombo.setModel(empModel);
         empCombo.setSelectedIndex(0);
         empCombo.setEditable(true);
-
-        okBtn = new JButton("OK");
 
         // Send off an event when the OkButton is clicked
         okBtn.addActionListener(new ActionListener() {
