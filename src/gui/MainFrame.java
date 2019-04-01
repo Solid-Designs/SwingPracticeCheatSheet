@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private FormPanel formPanel;
     private JFileChooser fileChooser;
+    private Controller controller;
 
     public MainFrame(){
         super("Hello World");
@@ -21,6 +24,7 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         formPanel = new FormPanel();
         fileChooser = new JFileChooser();
+        controller = new Controller();
 
         // File Chooser filter tutorial
         fileChooser.addChoosableFileFilter(new PersonFileFiler());
@@ -47,16 +51,19 @@ public class MainFrame extends JFrame {
 
         formPanel.setFormListener(new FormListener(){
             public void formEventOccurred(FormEvent e){
-                // Something to execute
-                String name = e.getName();
-                String occupation = e.getOccupation();
-                int ageCat = e.getAgeCategory();
-                String empCat = e.getEmpCat();
-                String taxID = e.getTaxID();
-                boolean usCitizen = e.isUsCitizen();
+                // I no longer need this!
+//                String name = e.getName();
+//                String occupation = e.getOccupation();
+//                int ageCat = e.getAgeCategory();
+//                String empCat = e.getEmpCat();
+//                String taxID = e.getTaxID();
+//                boolean usCitizen = e.isUsCitizen();
+//
+//                textPanel.appendText(name + ": " + occupation + ": "+ ageCat + ", " + empCat + ", " + taxID + "\n");
+//                System.out.println(e.getGender());
 
-                textPanel.appendText(name + ": " + occupation + ": "+ ageCat + ", " + empCat + ", " + taxID + "\n");
-                System.out.println(e.getGender());
+                // Put all the data in the controller!
+                controller.addPerson(e);
             }
         });
     }
