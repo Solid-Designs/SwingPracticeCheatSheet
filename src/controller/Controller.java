@@ -2,12 +2,22 @@ package controller;
 
 import gui.FormEvent;
 import model.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 // Never import gui stuff into your data model.
 // Only here in the controller!
 
 public class Controller {
+    Database db = new Database();
+
+    public List<Person> getPeople(){
+        return db.getPeople();
+    }
+
     public void addPerson(FormEvent ev){
-        Database db = new Database();
 
         String name = ev.getName();
         String occupation = ev.getOccupation();
@@ -58,5 +68,13 @@ public class Controller {
 
         // Then add the person to the database array list
         db.addPerson(person);
+    }
+
+    public void saveToFile(File file) throws IOException {
+        db.saveToFile(file);
+    }
+
+    public void loadFromFile(File file) throws IOException {
+        db.loadFromFile(file);
     }
 }

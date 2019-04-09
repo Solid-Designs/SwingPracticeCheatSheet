@@ -110,8 +110,6 @@ public class FormPanel extends JPanel {
                 // This return a string from the button group of radio buttons
                 String gender = genderGroup.getSelection().getActionCommand();
 
-                System.out.print(empCat);
-
                 FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat,
                         taxID, usCitizen, gender);
 

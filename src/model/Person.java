@@ -1,6 +1,13 @@
 package model;
 
-public class Person {
+import java.io.Serializable;
+
+/*
+You have to make sure that this class implements "Serializable"
+Otherwise you will get an error when you are trying to save and load.
+ */
+
+public class Person implements Serializable {
     public static int count = 0;
 
     private int id;

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
     private ToolBar toolBar;
@@ -14,6 +15,7 @@ public class MainFrame extends JFrame {
     private FormPanel formPanel;
     private JFileChooser fileChooser;
     private Controller controller;
+    private TablePanel tablePanel;
 
     public MainFrame(){
         super("Hello World");
@@ -24,7 +26,11 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         formPanel = new FormPanel();
         fileChooser = new JFileChooser();
+        tablePanel = new TablePanel();
+
         controller = new Controller();
+
+        tablePanel.setData(controller.getPeople());
 
         // File Chooser filter tutorial
         fileChooser.addChoosableFileFilter(new PersonFileFiler());
@@ -32,7 +38,7 @@ public class MainFrame extends JFrame {
         setJMenuBar(createMenuBar());
 
         add(toolBar, BorderLayout.NORTH);
-        add(textPanel, BorderLayout.CENTER);
+        add(tablePanel, BorderLayout.CENTER);
         add(formPanel, BorderLayout.WEST);
 
         // Set minimum size that the main frame can shrink
@@ -51,19 +57,9 @@ public class MainFrame extends JFrame {
 
         formPanel.setFormListener(new FormListener(){
             public void formEventOccurred(FormEvent e){
-                // I no longer need this!
-//                String name = e.getName();
-//                String occupation = e.getOccupation();
-//                int ageCat = e.getAgeCategory();
-//                String empCat = e.getEmpCat();
-//                String taxID = e.getTaxID();
-//                boolean usCitizen = e.isUsCitizen();
-//
-//                textPanel.appendText(name + ": " + occupation + ": "+ ageCat + ", " + empCat + ", " + taxID + "\n");
-//                System.out.println(e.getGender());
-
                 // Put all the data in the controller!
                 controller.addPerson(e);
+                tablePanel.refresh();
             }
         });
     }
@@ -115,7 +111,17 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION){
-                    System.out.println(fileChooser.getSelectedFile());
+                    try {
+
+                        controller.loadFromFile(fileChooser.getSelectedFile());
+                        tablePanel.refresh();
+
+                    } catch (IOException e1) {
+
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Could not load data from file", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
                 }
             }
         });
@@ -124,7 +130,16 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION){
-                    System.out.println(fileChooser.getSelectedFile());
+                    try {
+
+                        controller.saveToFile(fileChooser.getSelectedFile());
+
+                    } catch (IOException e1) {
+
+                        JOptionPane.showMessageDialog(MainFrame.this,
+                                "Could not save data to file", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
                 }
             }
         });
